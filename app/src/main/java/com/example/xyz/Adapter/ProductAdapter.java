@@ -27,14 +27,17 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ProductAdapter extends FirebaseRecyclerAdapter<Product, ProductAdapter.ViewHolder> {
 
-    public ProductAdapter(@NonNull FirebaseRecyclerOptions<Product> options) {
+    int layoutView;
+
+    public ProductAdapter(@NonNull FirebaseRecyclerOptions<Product> options, int cardProduct) {
         super(options);
+        layoutView = cardProduct;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_product, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(this.layoutView, parent, false));
     }
 
     @Override

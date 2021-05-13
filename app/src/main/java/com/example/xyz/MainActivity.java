@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageUser;
     private ImageButton buttonMessage, buttonShopCard;
     private SearchView searchView;
+    private CheckBox viewMode;
 
     private RecyclerView recyclerView;
     ProductAdapter productAdapter;
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+    int styleViewMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +67,28 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
-
         username = findViewById(R.id.username);
         imageUser = findViewById(R.id.imageUser);
         buttonMessage = findViewById(R.id.buttonMessage);
         buttonShopCard = findViewById(R.id.buttonShopCard);
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.recyclerView);
+        viewMode = findViewById(R.id.viewMode);
+        viewMode.setChecked(false);
 
+        // Khởi tạo kiểu màn hình //
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        if (viewMode.isChecked()) {
+            recyclerView.setLayoutManager(gridLayoutManager);
+            styleViewMode = R.layout.card_product;
+        }
+        else {
+            recyclerView.setLayoutManager(linearLayout);
+            styleViewMode = R.layout.card_product_1;
+        }
+
+        //recyclerView.setLayoutManager();
         listProduct = new ArrayList<>();
 
 
@@ -100,9 +117,35 @@ public class MainActivity extends AppCompatActivity {
                 new FirebaseRecyclerOptions.Builder<Product>()
                         .setQuery(FirebaseDatabase.getInstance().getReference("Products"), Product.class)
                         .build();
-
-        productAdapter = new ProductAdapter(options);
-        recyclerView.setAdapter(productAdapter);
+        if (viewMode.isChecked()) {
+            recyclerView.setLayoutManager(gridLayoutManager);
+            styleViewMode = R.layout.card_product;
+            productAdapter = new ProductAdapter(options, styleViewMode);
+            recyclerView.setAdapter(productAdapter);
+        }
+        else {
+            recyclerView.setLayoutManager(linearLayout);
+            styleViewMode = R.layout.card_product_1;
+            productAdapter = new ProductAdapter(options, styleViewMode);
+            recyclerView.setAdapter(productAdapter);
+        }
+        // khi nhấn vào (CheckBox) view mode thì nó sẽ đổi kiểu hiển thị sản phẩm //
+        viewMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (viewMode.isChecked()) {
+                    recyclerView.setLayoutManager(gridLayoutManager);
+                    styleViewMode = R.layout.card_product;
+                }
+                else {
+                    recyclerView.setLayoutManager(linearLayout);
+                    styleViewMode = R.layout.card_product_1;;
+                }
+                productAdapter = new ProductAdapter(options, styleViewMode);
+                recyclerView.setAdapter(productAdapter);
+                productAdapter.startListening();
+            }
+        });
 
         buttonMessage.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MessageActivity.class)));
         buttonShopCard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, CardShopActivity.class)));

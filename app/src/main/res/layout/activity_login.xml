@@ -46,12 +46,14 @@
                 android:background="@drawable/input"
                 android:fontFamily="@font/baloo"
                 android:hint="email"
+                android:text="nguyenquocnhan777@gmail.com"
                 android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/password"
+                android:text="nhan664484492"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
