@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity"
+    tools:ignore="HardcodedText">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </fragment>
+
+    <SearchView
+        android:id="@+id/SearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:iconifiedByDefault="false" />
+
+    <LinearLayout
+        android:id="@+id/typeMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SearchView"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ButtonMap"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Bản đồ" />
+
+        <Button
+            android:id="@+id/ButtonSatellite"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Vệ tinh" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/ButtonLocation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="o" />
+
+        <Button
+            android:id="@+id/ButtonPlus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/ButtonMinus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="-" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/ButtonAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="accept the address" />
+
+</RelativeLayout>
